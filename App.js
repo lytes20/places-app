@@ -1,48 +1,32 @@
 import React from "react";
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import { StyleSheet, View } from "react-native";
+import PlacesInput from "./src/components/PlaceInput";
+import PlacesList from "./src/components/PlacesList";
 
 export default class App extends React.Component {
   state = {
-    placeName: "",
     places: []
   };
-  placeSubmitHandler = () => {
-    const placeNameEntered = this.state.placeName;
-    if (placeNameEntered.trim() === "") {
-      return;
-    }
 
+  /**
+   * Handles adding places entered by a user
+   * @return {void}
+   */
+  placeAddedHandler = placeName => {
     this.setState(prevState => {
       return {
-        places: prevState.places.concat(prevState.placeName)
+        places: prevState.places.concat(placeName)
       };
     });
   };
-  placeNameChangeHandler = val => {
-    this.setState({ placeName: val });
-  };
+
   render() {
-    const placesOutput = this.state.places.map((place, index) => <Text key={index}>{place}</Text>);
     return (
       <View style={styles.container}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={{
-              width: 300,
-              height: 40
-            }}
-            placeholder="An awesome place"
-            onChangeText={this.placeNameChangeHandler}
-            value={this.state.placeName}
-          />
-          <Button
-            onPress={this.placeSubmitHandler}
-            title="Add"
-            color="#841584"
-            accessibilityLabel="Learn more about this purple button"
-          />
-        </View>
-        <View>{placesOutput}</View>
+        <PlacesInput
+          placeSubmitHandler={name => this.placeAddedHandler(name)}
+        />
+        <PlacesList places={this.state.places} />
       </View>
     );
   }
@@ -55,10 +39,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "flex-start"
-  },
-  inputContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between"
   }
 });
-
