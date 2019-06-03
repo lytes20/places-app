@@ -15,7 +15,7 @@ export default class App extends React.Component {
   placeAddedHandler = placeName => {
     this.setState(prevState => {
       return {
-        places: prevState.places.concat(placeName)
+        places: prevState.places.concat({key: (Math.random()).toString(), name: placeName})
       };
     });
   };
