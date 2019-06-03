@@ -10,7 +10,7 @@ const PlacesList = props => (
       <ListItem
         placeName={data.item.name}
         placeImage={data.item.image}
-        onItemPress={() => alert(`An item ${data.item.key} was clicked`)}
+        onItemPress={() => props.onItemSelected(data.item.key)}
       />
     )}
   />

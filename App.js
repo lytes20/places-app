@@ -3,10 +3,12 @@ import { StyleSheet, View } from "react-native";
 import PlacesInput from "./src/components/PlaceInput";
 import PlacesList from "./src/components/PlacesList";
 import placeImage from "./src/assets/images/paris.jpg";
+import PlaceDetail from "./src/components/PlaceDetail";
 
 export default class App extends React.Component {
   state = {
-    places: []
+    places: [],
+    selectedPlace: null
   };
 
   /**
@@ -25,13 +27,42 @@ export default class App extends React.Component {
     });
   };
 
+  /**
+   * Handles tap on a place in the list
+   * @return {void}
+   */
+  placeSelectedHandler = key => {
+    this.setState(prevState => {
+      return {
+        selectedPlace: prevState.places.find(place => {
+          return place.key === key;
+        })
+      };
+    });
+  };
+
+  /**
+   * Handles closing the model
+   * @return {void}
+   */
+  handleCloseModal = () => {
+    this.setState({ selectedPlace: null });
+  };
+
   render() {
     return (
       <View style={styles.container}>
+        <PlaceDetail
+          selectedPlace={this.state.selectedPlace}
+          closeModal={this.handleCloseModal}
+        />
         <PlacesInput
           placeSubmitHandler={name => this.placeAddedHandler(name)}
         />
-        <PlacesList places={this.state.places} />
+        <PlacesList
+          places={this.state.places}
+          onItemSelected={key => this.placeSelectedHandler(key)}
+        />
       </View>
     );
   }
